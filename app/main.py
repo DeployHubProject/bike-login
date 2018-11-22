@@ -23,7 +23,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 import pprint
-import os
 from flask import Flask, jsonify, request, abort, make_response
 from pymongo import MongoClient, errors 
 from bson.objectid import ObjectId
@@ -35,9 +34,9 @@ app.config.from_object(__name__)
 CORS(app)
 
 db = None
-dburl = 'mongodb://' + os.getenv('BIKE_DB_SERVICE_HOST','docker.for.mac.localhost') + ':27017'
+
 try:
-    client = MongoClient(dburl)
+    client = MongoClient('mongodb://mongo-0.mongo:27017')
     pprint.pprint(client.server_info())
     db = client.test
 except errors.ConnectionFailure as e:
