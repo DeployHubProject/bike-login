@@ -1,14 +1,14 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ include "bike-login.name" . }}
+  name: {{ include "bike-login.name" . }}-{{ .Values.image.version }}
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
         app: {{ include "bike-login.name" . }}
-        version: {{ include "bike-login.name" . }}-{{ .Values.image.version }}
+        version: {{ .Values.image.version }}
     spec:
       containers:
         - name: {{ include "bike-login.name" . }}
