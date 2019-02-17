@@ -9,6 +9,8 @@ spec:
       labels:
         app: {{ include "bike-login.name" . }}
         version: {{ .Values.image.version }}
+        dockersha: {{ .Values.DockerSha }}
+        gitcommit: {{ .Values.GitCommit }}
     spec:
       containers:
         - name: {{ include "bike-login.name" . }}
