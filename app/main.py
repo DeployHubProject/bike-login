@@ -125,8 +125,8 @@ def update_user(userid):
     response_object['id'] = str(response_object.pop('_id'))
     return jsonify(response_object)
 
-@app.route('/users/<username>/<feature>', methods=['PUT'])
-def update_userfeature(username,feature):
+@app.route('/features/<feature>/<username>', methods=['GET'])
+def update_userfeature(feature, username):
     """return the updated user with the feature.
     Update a user."""
 
