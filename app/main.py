@@ -117,6 +117,7 @@ def update_user(userid):
     response_object = {}
     user = request.get_json()
     user['_id'] =  ObjectId(userid)
+    user['feature'] = 'Wasp'
     r = db.users.replace_one({'_id': ObjectId(userid)}, user)
     pprint.pprint(r.matched_count)
     pprint.pprint(r.modified_count)
@@ -124,6 +125,23 @@ def update_user(userid):
     response_object['id'] = str(response_object.pop('_id'))
     return jsonify(response_object)
 
+@app.route('/users/<username>/<feature>', methods=['PUT'])
+def update_userfeature(username,feature):
+    """return the updated user with the feature.
+    Update a user."""
+
+    response_object = {}
+    found_user = db.users.find_one({'username': username})
+
+    if (found_user is None):
+        return jsonify(response_object)
+
+    found_user['feature'] = feature
+    userid = found_user['_id']
+    db.users.replace_one({'_id': ObjectId(userid)}, found_user)
+    response_object = found_user
+    response_object['id'] = str(response_object.pop('_id'))
+    return jsonify(response_object)
 
 @app.route('/users/<userid>', methods=['DELETE'])
 def del_user(userid):
