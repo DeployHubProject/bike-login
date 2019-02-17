@@ -23,6 +23,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 import pprint
+import time
 from flask import Flask, jsonify, request, abort, make_response
 from pymongo import MongoClient, errors 
 from bson.objectid import ObjectId
@@ -35,12 +36,14 @@ CORS(app)
 
 db = None
 
-try:
+while (not db):
+  try:
     client = MongoClient('mongodb://mongo-0.mongo:27017')
     pprint.pprint(client.server_info())
     db = client.test
-except errors.ConnectionFailure as e:
-    print ("Could not connect to server: %s") % e
+  except errors.ConnectionFailure as e:
+    print ("Could not connect to server: mongodb")
+    time.sleep(30)
 
     
 @app.route('/users', methods=['GET'])
@@ -129,6 +132,9 @@ def update_user(userid):
 def update_userfeature(feature, username):
     """return the updated user with the feature.
     Update a user."""
+
+    print(feature)
+    print(username)
 
     response_object = {}
     found_user = db.users.find_one({'username': username})
