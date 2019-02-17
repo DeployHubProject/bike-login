@@ -133,9 +133,6 @@ def update_userfeature(feature, username):
     """return the updated user with the feature.
     Update a user."""
 
-    print(feature)
-    print(username)
-
     response_object = {}
     found_user = db.users.find_one({'username': username})
 
@@ -143,12 +140,10 @@ def update_userfeature(feature, username):
         return jsonify(response_object)
 
     found_user['feature'] = feature
-    print("FOUND USER")
-    pprint.pprint(found_user)
+
     userid = found_user['_id']
-    r = db.users.replace_one({'_id': ObjectId(userid)}, found_user)
-    pprint.pprint(r.matched_count)
-    pprint.pprint(r.modified_count)
+    db.users.replace_one({'_id': ObjectId(userid)}, found_user)
+
     response_object = found_user
     response_object['id'] = str(response_object.pop('_id'))
     return jsonify(response_object)
